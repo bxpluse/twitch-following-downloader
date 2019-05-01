@@ -36,6 +36,10 @@ def get_following(channel):
 
 
 if __name__ == "__main__":
+    if SECRET_CLIENT_ID == "":
+        print("Set the client id in config.py")
+        exit(0)
+
     import sys
     if len(sys.argv) != 2:
         print("Usage: python following.py [username]")
