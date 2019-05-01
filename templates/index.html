@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Twitch Following Downloader</title>
+        <link rel="shortcut icon" href="#" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous"
+        >
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}">
+        <script type="text/javascript" src="{{url_for('static', filename='javascripts/controller.js')}}"></script>
+    </head>
+
+    <body>
+        <!-- Navigation/header -->
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Twitch Following Exporter</a>
+            </li>
+        </ul>
+
+        <div id="main">
+            <!-- Form to submit username -->
+            <form id="form" action="{{ url_for('result') }}" method="post">
+                <div class="form-group">
+                    <label for="username">Twitch Username</label>
+                    <input type="text" class="form-control" id="username" name="username"
+                           placeholder="Enter Twitch Username" autocomplete="off" minlength="1">
+                </div>
+                <button type="submit" class="btn btn-info">Submit</button>
+            </form>
+            <br>
+            <!-- Spinner while file is generating -->
+            <div class="d-flex justify-content-center">
+                <button id="spinner" class="btn btn-primary" disabled>
+                    <span class="spinner-border spinner-border-sm"></span>
+                    &nbsp; Please wait a few seconds ...
+                </button>
+            </div>
+        </div>
+
+        <div id="res">
+            <!-- Button to download table as CSV -->
+            <button class="btn btn-info" onclick="exportTableToCSV('following.csv')">Download Table As CSV</button>
+            <br><br>
+            <!-- Table of followings -->
+            <table id="table" class="table">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">Channel</th>
+                        <th onclick="sortTable(1)">Follow Date</th>
+                        <th onclick="sortTable(2)">Notifications</th>
+                        <th onclick="sortTable(3)">User Created Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
