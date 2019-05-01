@@ -36,13 +36,16 @@ def get_following(channel):
 
 
 if __name__ == "__main__":
+    import sys
+    if len(sys.argv) != 2:
+        print("Usage: python following.py [username]")
+        exit(0)
 
-    username = ""  # Change to username to fetch
+    username = sys.argv[1]  # Change to username to fetch
 
     following = get_following(username)
     f = open('following.csv', 'w', encoding='utf-8', newline="\n")
     writer = csv.writer(f, dialect='excel', quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['Channel', 'Follow Date', 'Notifications', 'User Created'])
     for key, value in following.items():
-        print(key)
         writer.writerow([key, value['follow_date'], value['notified'], value['created_date']])
