@@ -19,19 +19,19 @@ $(document).ready(function() {
             return response.json();
         }).then(function(json) {
             username_input.val("");
+            let count = 0;
             for (const [key, value] of Object.entries(json['following'])) {
+                count++;
                 const channel = key;
-                const follow_date = value['follow_date'];
-                const notified = value['notified'];
-                const created_date = value['created_date'];
+                const follow_date = value;
                 $("#table tbody").append("<tr>\n" +
                                              `<td>${channel}</td>\n` +
                                              `<td>${follow_date}</td>\n` +
-                                             `<td>${notified}</td>\n` +
-                                             `<td>${created_date}</td>\n` +
                                          "</tr>");
             }
-            sortTable(1);
+            if(count < 100){
+                sortTable(1);
+            }
             res.show();
             spinner.hide();
         });
