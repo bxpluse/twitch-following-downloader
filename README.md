@@ -1,5 +1,4 @@
 # twitch-following-downloader
-
 Download a CSV file of all channels a user follows.
 
 https://twitch-following-downloader.herokuapp.com/
