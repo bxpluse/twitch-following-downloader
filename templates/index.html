@@ -17,17 +17,18 @@
         <!-- Navigation/header -->
         <ul class="nav justify-content-center">
             <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Twitch Following Exporter</a>
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Twitch Following Exporter(v1.2)</a>
             </li>
         </ul>
 
         <div id="main">
             <!-- Form to submit username -->
+            <p>Fetch and download every channel you follow</p>
             <form id="form" action="{{ url_for('result') }}" method="post">
                 <div class="form-group">
                     <label for="username">Twitch Username</label>
                     <input type="text" class="form-control" id="username" name="username"
-                           placeholder="Enter Twitch Username" autocomplete="off" minlength="1">
+                           placeholder="Enter your Twitch username" autocomplete="off" minlength="1">
                 </div>
                 <button type="submit" class="btn btn-info">Submit</button>
             </form>

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from following import get_following
+from following import get_following, get_oauth
 
 app = Flask(__name__)
 
@@ -8,7 +8,8 @@ app = Flask(__name__)
 def result():
     if request.method == 'POST':
         username = request.json['username']
-        res = get_following(username)
+        token = get_oauth()
+        res = get_following(username, token)
         data = {'username': username, 'following': res}
         return jsonify(data)
     return render_template('index.html')

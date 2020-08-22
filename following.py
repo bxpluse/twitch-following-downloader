@@ -1,18 +1,29 @@
 import requests
 import json
 import csv
-from config import SECRET_CLIENT_ID
+from config import CLIENT_ID, CLIENT_SECRET
 
 
-def get_following(channel):
+def get_oauth():
+    url = "https://id.twitch.tv/oauth2/token?client_id={0}&client_secret={1}&grant_type=client_credentials" \
+        .format(CLIENT_ID, CLIENT_SECRET)
+    r = requests.post(url)
+    json_data = json.loads(r.text)
+    access_token = json_data['access_token']
+    return access_token
+
+
+def get_following(channel, access_token):
     """
+    :param access_token: Access token from OAuth
     :param channel: Username of channel
     :return: res: Dictionary of following where key=username and value=follow_date
     """
-    headers = {'Client-ID': SECRET_CLIENT_ID}
+    headers = {'Client-ID': CLIENT_ID,
+               'Authorization': 'Bearer {0}'.format(access_token)}
     res = {}
 
-    user_id = get_id(channel)
+    user_id = get_id(channel, access_token)
     if user_id is None:
         return res
 
@@ -39,12 +50,14 @@ def get_following(channel):
     return res
 
 
-def get_id(channel):
+def get_id(channel, access_token):
     """
+    :param access_token: Access token from OAuth
     :param channel: Username of channel
     :return: user_id: Integer id of user
     """
-    headers = {'Client-ID': SECRET_CLIENT_ID}
+    headers = {'Client-ID': CLIENT_ID,
+               'Authorization': 'Bearer {0}'.format(access_token)}
     id_req = "https://api.twitch.tv/helix/users?login={0}"
     try:
         r = requests.get(id_req.format(channel), headers=headers)
@@ -56,18 +69,20 @@ def get_id(channel):
 
 
 if __name__ == "__main__":
-    if SECRET_CLIENT_ID == "":
-        print("Set the client id in config.py")
+    if CLIENT_SECRET == "" or CLIENT_ID == "":
+        print("Set the client id and client secret in config.py")
         exit(0)
 
     import sys
+
     if len(sys.argv) != 2:
         print("Usage: python following.py [username]")
         exit(0)
 
     username = sys.argv[1]  # Change to username to fetch
 
-    following = get_following(username)
+    token = get_oauth()
+    following = get_following(username, token)
     f = open('following.csv', 'w', encoding='utf-8', newline="\n")
     writer = csv.writer(f, dialect='excel', quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['Channel', 'Follow Date', 'Notifications', 'User Created'])

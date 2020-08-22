@@ -1,4 +1,5 @@
 """
-To get a Client ID: https://dev.twitch.tv/docs/v5/
+To get a Client ID and Secret: https://dev.twitch.tv/docs/v5/
 """
-SECRET_CLIENT_ID = ""
+CLIENT_ID = ""
+CLIENT_SECRET = ""
