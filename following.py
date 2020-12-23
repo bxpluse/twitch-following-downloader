@@ -36,7 +36,11 @@ def get_following(channel, access_token):
 
     # Each POST can only fetch 100 users at a time
     while current < total:
-        cursor = json_data['pagination']['cursor']  # Cursor to fetch the next batch
+        pagination = json_data['pagination']
+        if 'cursor' not in pagination:
+            break
+        cursor = pagination['cursor']  # Cursor to fetch the next batch
+
         for user in json_data['data']:
             following_name = str(user['to_name'])  # Channel name
             follow_date = str(user['followed_at'])  # Date user followed
@@ -46,6 +50,12 @@ def get_following(channel, access_token):
         url = "https://api.twitch.tv/helix/users/follows?first=100&from_id={0}&after={1}"
         r = requests.get(url.format(user_id, cursor), headers=headers)
         json_data = json.loads(r.text)
+
+    for user in json_data['data']:
+        following_name = str(user['to_name'])
+        follow_date = str(user['followed_at'])
+        res[following_name] = follow_date
+        current += 1
 
     return res
 
